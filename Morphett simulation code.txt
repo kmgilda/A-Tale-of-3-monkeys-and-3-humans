@@ -1,0 +1,502 @@
+; Load a program from the menu or write your own!
+
+; Turing machine to simulate river puzzle
+
+;One possible solution:
+;bs#b#bs#b#hh#hs#bh#hs#hh#b#bs#b#bs#
+
+;'<current state> <current symbol> <new symbol> <direction> <new state>'
+
+0 b b l 1
+0 s s l 1
+0 h h l 1
+0 _ _ r rejectstart
+
+rejectstart _ : r rejectstarta
+rejectstarta _ - r rejectstartb
+rejectstartb * ( * halt-rejectstartb
+
+1 _ _ l 2
+
+2 _ M l 3
+
+3 _ M l 4
+
+4 _ M l 5
+
+5 _ H l 6
+
+6 _ H l 7
+
+7 _ H l 8
+
+8 _ d r 9
+
+9 H H r 9
+9 M M r 9
+9 _ _ r 10
+
+10 h h r 10
+10 b b r 10
+10 s s r 10
+10 # # r 10
+10 _ _ r 11
+
+11 _ e r 12
+
+12 _ e r 13
+
+13 _ e r 14
+
+14 _ f r 15
+
+15 _ f r 16
+16 _ f r 17
+
+17 e e l 17
+17 f f l 17
+17 _ _ l 18
+
+18 e e l 18
+18 f f l 18
+18 s s l 18
+18 # # l 18
+18 b b l 18
+18 h h l 18
+18 _ _ l 19
+
+19 b b l 19
+19 s s l 19
+19 h h l 19
+19 # # l 19
+19 _ _ r 73
+
+73 b b r 74
+73 s s r 76
+73 h h r 74
+73 _ _ l 77
+
+74 # # r 73
+74 s s r 75
+74 b b r 75
+74 h h r 75
+
+75 # # r 73
+75 b b r rej1
+75 h h r rej1
+75 s s r rej1
+
+76 # # l rej1
+76 s s l rej1
+76 b b r 75
+76 h h r 75
+
+77 # # l 77
+77 s s l 77
+77 b b l 77
+77 h h l 77
+77 _ _ r 20
+
+20 # # r 20
+20 $ $ r 20
+20 b $ l 21
+20 s $ l 21
+20 h $ l 67
+20 _ _ r 61
+
+21 $ $ l 21
+21 # # l 21
+21 _ _ l 22
+
+22 f f l 22
+22 M f r 23
+
+23 f f r 23
+23 _ _ r 24
+
+24 $ $ r 24
+24 # # r 24
+24 b b r 24
+24 s s r 24
+24 h h r 24
+24 _ _ r 25
+
+25 e e r 25
+25 H H r 25
+25 M M r 25
+25 f M l 26
+
+26 M M l 26
+26 H H l 26
+26 _ _ l 26
+26 s s l 26
+26 b b l 26
+26 h h l 26
+26 e e l 26
+26 # # l 26
+26 $ $ r 27
+
+27 b b l 20
+27 h h l 20
+27 s s l 20
+27 # # l 28
+28 # # l 28
+28 $ $ l 28
+28 _ _ r 29
+
+29 $ $ l 30
+
+30 f f l 30
+30 e e l 30
+30 H H l 30
+30 M M l 30
+30 _ _ l 30
+30 d d r 31
+
+31 e e r 31
+31 Y Y r 31
+31 f f r 31
+31 _ _ l 34
+31 M M l 34
+31 H X r 32
+
+32 Y Y r 32
+32 H H r 32
+32 e e r 32
+32 _ _ l 34
+32 f f r 32
+32 M Y l 33
+
+33 Y Y l 33
+33 H H l 33
+33 e e l 33
+33 X X r 93
+
+93 H X r 32
+93 Y Y r 93
+93 f f r 93
+93 e e r 93
+93 M M r rej2
+93 _ _ l 34
+
+rej2 * * r rej2a
+rej2a _ _ r rej2b
+rej2b * * r rej2b
+rej2b _ _ r rej2c
+rej2c * * r rej2c
+rej2c _ _ l rej2ca
+rej2ca * _ l rej2ca
+rej2ca _ _ l rej2cb
+rej2cb * _ l rej2cb
+rej2cb d : r rej2cc
+rej2cc * - r rej2cc
+rej2cc * ( * halt-rej2cc
+
+34 f f l 34
+34 e e l 34
+34 X H l 34
+34 Y M l 34
+34 H H l 34
+34 d d r 35
+
+35 f f r 35
+35 e e r 35
+35 H H r 35
+35 M M r 35
+35 _ _ r 36
+36 $ $ r 36
+36 # # r 36
+36 b b r 36
+36 s s r 36
+36 h h r 36
+36 _ _ r 37
+
+37 f f r 37
+37 e e r 37
+37 H X r 38
+37 M M l 41
+
+38 f f r 38
+38 e e r 38
+38 Y Y r 38
+38 H H r 38
+38 M Y l 39
+38 _ _ l 41
+
+39 f f l 39
+39 Y Y l 39
+39 H H l 39
+39 e e l 39
+39 X X r 40
+
+40 H X r 38
+40 Y Y r 40
+40 f f r 40
+40 e e r 40
+40 _ _ l 41
+40 M M l rej3
+
+rej3 * * r rej3
+rej3 _ _ l rej3a
+rej3a * _ l rej3a
+rej3a d : r rej3b
+rej3b * - r rej3c
+rej3c * ( * halt-rej3c
+
+41 # # l 41
+41 h h l 41
+41 e e l 41
+41 f f l 41
+41 _ _ l 41
+41 b b l 41
+41 s s l 41
+41 h h l 41
+41 H H l 41
+41 X H l 41
+41 Y M l 41
+41 $ $ r 42
+
+42 # # r 43
+43 $ $ r 43
+43 # # r 43
+43 b $ r 44
+43 s $ r 44
+43 h $ r 54
+43 _ _ r 61
+
+61 H H r 62
+61 e e r rej3
+62 H H r 63
+62 e e r rej3
+63 H H r 64
+63 e e r rej3
+64 M M r 65
+64 f f r rej3
+65 M M r 66
+65 f f rej3
+66 M M r accept
+66 f f rej3
+
+accept * _ l accept
+accept d : r accept1
+accept1 _ - r accept1
+accept1 _ ) * halt-accept1
+
+44 h h r 44
+44 # # r 44
+44 b b r 44
+44 s s r 44
+44 _ _ r 45
+
+45 e e r 45
+45 H H r 45
+45 f f r 45
+45 M f l 46
+
+46 f f l 46
+46 e e l 46
+46 H H l 46
+46 _ _ l 47
+
+47 * * l 47
+47 _ _ l 48
+
+48 f f l 48
+48 M M r 49
+48 H H r 49
+48 e e r 49
+
+49 f M r 50
+
+50 f f r 50
+50 _ _ r 51
+
+51 $ $ r 51
+51 # # r 51
+51 b b r 51
+51 s s r 51
+51 h h r 51
+51 _ _ l 52
+
+52 b b l 52
+52 # # l 52
+52 h h l 52
+52 s s l 52
+52 $ $ r 53
+
+53 # # l 78
+53 b b l 43
+53 h h l 43
+53 s s l 43
+
+54 h h r 54
+54 # # r 54
+54 b b r 54
+54 s s r 54
+54 _ _ r 55
+
+55 e e r 55
+55 H e l 56
+
+56 e e l 56
+56 _ _ l 57
+
+57 * * l 57
+57 _ _ l 58
+
+58 f f l 58
+58 M M l 58
+58 e e l 58
+
+58 d d r 59
+58 H H r 59
+
+59 e H r 60
+
+60 e e r 60
+60 f f r 60
+60 M M r 60
+60 _ _ r 51
+
+78 # # l 78
+78 $ $ l 78
+78 _ _ r 79
+
+79 $ $ l 80
+
+80 _ _ l 80
+80 f f l 80
+80 e e l 80
+80 H H l 80
+80 M M l 80
+80 d d r 81
+
+81 e e r 81
+81 Y Y r 81
+81 f f r 81
+81 _ _ l 84
+81 M M l 84
+81 H X r 82
+
+
+82 Y Y r 82
+82 f f r 82
+82 e e r 82
+82 H H r 82
+82 M Y l 83
+82 _ _ l 84
+
+83 Y Y l 83
+83 H H l 83
+83 e e l 83
+83 X X r 94
+
+94 H X r 82
+94 Y Y r 94
+94 f f r 94
+94 e e r 94
+94 M M r rej2
+94 _ _ l 84
+
+
+
+84 f f l 84
+84 e e l 84
+84 X H l 84
+84 Y M l 84
+84 H H l 84
+84 d d r 85
+
+
+85 f f r 85
+85 e e r 85
+85 H H r 85
+85 M M r 85
+85 _ _ r 86
+
+86 * * r 86
+86 _ _ r 87
+
+87 f f r 87
+87 e e r 87
+87 H X r 88
+87 M M l 91
+
+88 e e r 88
+88 Y Y r 88
+88 f f r 88
+88 H H r 88
+88 M Y l 89
+88 _ _ l 91
+
+89 Y Y l 89
+89 f f l 89
+89 e e l 89
+89 H H l 89
+89 X X r 90
+
+90 M M l rej3
+90 H X r 88
+90 Y Y r 90
+90 e e r 90
+90 f f r 90
+90 _ _ l 91
+
+91 # # l 91
+91 h h l 91
+91 e e l 91
+91 f f l 91
+91 _ _ l 91
+91 b b l 91
+91 s s l 91
+91 h h l 91
+91 H H l 91
+91 X H l 91
+91 Y M l 91
+91 $ $ r 92
+
+
+92 # # r 20
+
+
+
+67 $ $ l 67
+67 # # l 67
+67 _ _ l 68
+
+68 M M l 68
+68 f f l 68
+68 e e l 68
+68 H e r 69
+
+69 M M r 69
+69 f f r 69
+69 e e r 69
+69 _ _ r 70
+
+70 # # r 70
+70 $ $ r 70
+70 b b r 70
+70 s s r 70
+70 h h r 70
+70 _ _ r 71
+
+71 H H r 71
+71 e H l 72
+
+72 H H l 72
+72 _ _ l 72
+72 # # l 72
+72 s s l 72
+72 b b l 72
+72 h h l 72
+72 $ $ r 27
+
+rej1 * _ r rej1
+rej1 f _ r rej1a
+rej1a f _ r rej1b
+rej1b f _ l rej1c
+rej1c * _ l rej1c
+rej1c d : r rej1d
+rej1d _ - r rej1d
+rej1d _ ( r halt-rej1d
