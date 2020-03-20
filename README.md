@@ -1,4 +1,4 @@
-# A-Tale-of-3-monkeys-and-3-humans
+# A Tale of 3 monkeys and 3 humans
 
 Problem Statement :
 
